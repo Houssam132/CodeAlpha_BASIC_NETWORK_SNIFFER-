@@ -1,5 +1,5 @@
 import ifaddr
-from scapy.all import sniff, Raw
+from scapy.all import sniff
 from scapy.layers.inet import IP, TCP, UDP
 from scapy.layers.http import HTTPRequest
 def packet_handler(packet):
@@ -15,10 +15,7 @@ def packet_handler(packet):
             print(f"   TTL: {ip_layer.ttl}")
             print(f"   Version: {ip_layer.version}")
             print(f"   Protocol: {ip_layer.proto}")
-            if packet.haslayer(Raw):
-                print(f"Data: {packet[Raw].load}")
-            else:
-                print("There is no data")
+            
 
         elif packet.haslayer(UDP):
             udp_layer = packet.getlayer(UDP)
@@ -26,8 +23,7 @@ def packet_handler(packet):
             print(f"   Length: {udp_layer.len}")
             print(f"   Checksum: {udp_layer.chksum}")
 
-            if packet.haslayer(Raw):
-                print(f"Data: {packet[Raw].load}")
+            
 def process_packet(packet):
     if packet.haslayer(HTTPRequest):
         print(packet)
@@ -46,6 +42,6 @@ if __name__ == "__main__":
         for ip in adapter.ips:
             print(f"{adapter.nice_name}: {ip.ip}")
 
-    # Replace this with the name of the interface you want to use for sniffing
-    interface = "Intel(R) Wireless-AC 9560 160MHz"  # Example interface name, replace with your actual interface name
+    
+    interface = "Intel(R) Wireless-AC 9560 160MHz"  
     start_sniffing(interface)
